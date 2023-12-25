@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-12-24T19:19:21-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">QuetzalDelta</title><subtitle>Modo quetza una forma diferente de hackear</subtitle><author><name>Quetzal</name></author><entry><title type="html">Enumeración De Puertos Sigiloso</title><link href="http://localhost:4000/Enumeraci%C3%B3n-de-Puertos-Sigiloso/" rel="alternate" type="text/html" title="Enumeración De Puertos Sigiloso" /><published>2023-12-24T00:00:00-07:00</published><updated>2023-12-24T00:00:00-07:00</updated><id>http://localhost:4000/Enumeraci%C3%B3n-de-Puertos-Sigiloso</id><content type="html" xml:base="http://localhost:4000/Enumeraci%C3%B3n-de-Puertos-Sigiloso/">&lt;p&gt;La enumeración de puertos es una tarea crucial en las pruebas de penetración y seguridad de redes. Tal y como hemos visto, Nmap es una herramienta de línea de comandos ampliamente utilizada para esta tarea, pero existen alternativas para realizar la enumeración de puertos de manera efectiva sin utilizar herramientas externas.&lt;/p&gt;
+
+&lt;p&gt;Una alternativa a la enumeración de puertos utilizando herramientas externas es aprovechar el poder de los descriptores de archivo en sistemas Unix. Los descriptores de archivo son una forma de acceder y manipular archivos y dispositivos en sistemas Unix. En particular, la utilización de /dev/tcp permite la conexión a un host y puerto específicos como si se tratara de un archivo en el sistema.&lt;/p&gt;
+
+&lt;p&gt;Para realizar la enumeración de puertos utilizando /dev/tcp en Bash, es posible crear un script que realice una conexión a cada puerto de interés y compruebe si el puerto está abierto o cerrado en función de si se puede enviar o recibir datos. Una forma de hacer esto es mediante el uso de comandos como “echo” o “cat“, aplicando redireccionamientos al /dev/tcp. El código de estado devuelto por el comando se puede utilizar para determinar si el puerto está abierto o cerrado.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/enumeracion-puertos/Terminal.png&quot; alt=&quot;CapturaPantallaTerminal&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package main
+
+import (
+	&quot;fmt&quot;
+	&quot;flag&quot;
+	&quot;context&quot; // Done() struct{} || &amp;lt;- ctx.Done()
+	&quot;strings&quot;
+	&quot;strconv&quot;
+	&quot;log&quot;
+	&quot;sync&quot;
+	&quot;time&quot;
+	&quot;net&quot;
+)
+
+var (
+	host = flag.String(&quot;host&quot;, &quot;127.0.0.1&quot;, &quot;Host o dirección IP a escanear&quot;)
+	ports = flag.String(&quot;range&quot;, &quot;1-65535&quot;, &quot;Rango de puertos a comprobar: 80,443,1-65535,1000-2000, ...&quot;)
+	threads = flag.Int(&quot;threads&quot;, 1000, &quot;Número de hilos a usar&quot;)
+	timeout = flag.Duration(&quot;timeout&quot;, 1*time.Second, &quot;Segundos por puerto&quot;)
+)
+
+func processRange(ctx context.Context, r string) chan int {
+	c := make(chan int) // c &amp;lt;- elemento
+	done := ctx.Done()
+
+	go func() {
+		defer close(c)
+		blocks := strings.Split(r, &quot;,&quot;)
+
+		for _, block := range blocks {
+			rg := strings.Split(block, &quot;-&quot;)
+			var minPort, maxPort int
+			var err error
+
+			minPort, err = strconv.Atoi(rg[0])
+
+			if err != nil {
+				log.Print(&quot;No ha sido posible interpretar el rango: &quot;, block)
+				continue
+			}
+
+			if len(rg) == 1 {
+				maxPort = minPort
+			} else {
+				maxPort, err = strconv.Atoi(rg[1])
+				if err != nil {
+					log.Print(&quot;No ha sido posible interpretar el rango: &quot;, block)
+					continue
+				}
+			}
+			for port := minPort; port &amp;lt;= maxPort; port++ {
+				select {
+				case c &amp;lt;- port:
+				case &amp;lt;-done:
+					return
+				}
+			}
+		}
+	}()
+	return c
+}
+
+func scanPorts(ctx context.Context, in &amp;lt;-chan int) chan string {
+	out := make(chan string)
+	done := ctx.Done()
+	var wg sync.WaitGroup
+	wg.Add(*threads)
+
+	for i := 0; i &amp;lt; *threads; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case port, ok := &amp;lt;-in:
+					if !ok {
+						return
+					}
+					s := scanPort(port)
+					select {
+					case out &amp;lt;- s:
+					case &amp;lt;-done:
+						return
+					}
+				case &amp;lt;-done:
+					return
+				}
+			}
+		}()
+	}
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+
+	return out
+}
+
+func scanPort(port int) string {
+	addr := fmt.Sprintf(&quot;%s:%d&quot;, *host, port) // ip:puerto
+	conn, err := net.DialTimeout(&quot;tcp&quot;, addr, *timeout)
+
+	if err != nil {
+		return fmt.Sprintf(&quot;%d: %s&quot;, port, err.Error())
+	}
+
+	conn.Close()
+
+	return fmt.Sprintf(&quot;%d: Abierto&quot;, port)
+}
+
+func main() {
+	ctx, cancel := context.WithCancel(context.Background()) // Definimos nuestro contexto
+	defer cancel()
+
+	flag.Parse()
+	fmt.Printf(&quot;\n[*] Escaneando host %s (Puerto: %s)\n\n&quot;, *host, *ports)
+
+	pR := processRange(ctx, *ports)
+	sP := scanPorts(ctx, pR)
+
+	for port := range sP {
+		if strings.HasSuffix(port, &quot;: Abierto&quot;) {
+			fmt.Println(port)
+		}
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Aunque esta alternativa puede ser menos precisa y más lenta que el uso de herramientas especializadas como Nmap, es una opción interesante y viable para aquellos que buscan una solución rápida y sencilla para la enumeración de puertos en sistemas Unix. Además, este enfoque puede proporcionar una mejor comprensión de cómo funcionan los descriptores de archivo en los sistemas Unix y cómo se pueden utilizar para realizar tareas de red.&lt;/p&gt;</content><author><name>Quetzal</name></author><summary type="html">La enumeración de puertos es una tarea crucial en las pruebas de penetración y seguridad de redes. Tal y como hemos visto, Nmap es una herramienta de línea de comandos ampliamente utilizada para esta tarea, pero existen alternativas para realizar la enumeración de puertos de manera efectiva sin utilizar herramientas externas.</summary></entry></feed>

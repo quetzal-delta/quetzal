@@ -1,0 +1,509 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Enumeración De Puertos Sigiloso - QuetzalDelta</title>
+<meta name="description" content="La enumeración de puertos es una tarea crucial en las pruebas de penetración y seguridad de redes. Tal y como hemos visto, Nmap es una herramienta de línea de comandos ampliamente utilizada para esta tarea, pero existen alternativas para realizar la enumeración de puertos de manera efectiva sin utilizar herramientas externas.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_Mx">
+<meta property="og:site_name" content="QuetzalDelta">
+<meta property="og:title" content="Enumeración De Puertos Sigiloso">
+<meta property="og:url" content="http://localhost:4000/Enumeraci%C3%B3n-de-Puertos-Sigiloso/">
+
+
+  <meta property="og:description" content="La enumeración de puertos es una tarea crucial en las pruebas de penetración y seguridad de redes. Tal y como hemos visto, Nmap es una herramienta de línea de comandos ampliamente utilizada para esta tarea, pero existen alternativas para realizar la enumeración de puertos de manera efectiva sin utilizar herramientas externas.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-12-24T00:00:00-07:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/Enumeraci%C3%B3n-de-Puertos-Sigiloso/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Quetzal",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="QuetzalDelta Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Artículos</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categorías</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Etiquetas</a>
+            </li><li class="masthead__menu-item">
+              <a href="/buscador/" >Buscador</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Enumeración De Puertos Sigiloso</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avatar.png" alt="Quetzal" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Quetzal</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        CyberSecurity Analyst at ElevenPaths / OSCP / OSWP / eWPTxv2 / eJPT / eCPPTv2 / CPHE / CHEE
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://instagram.com/quetzal_r3" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/quetzal-delta" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Enumeración De Puertos Sigiloso">
+    <meta itemprop="description" content="La enumeración de puertos es una tarea crucial en las pruebas de penetración y seguridad de redes. Tal y como hemos visto, Nmap es una herramienta de línea de comandos ampliamente utilizada para esta tarea, pero existen alternativas para realizar la enumeración de puertos de manera efectiva sin utilizar herramientas externas.">
+    <meta itemprop="datePublished" content="December 24, 2023">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Enumeración De Puertos Sigiloso
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2023-12-24T00:00:00-07:00">December 24, 2023 </time>&emsp;
+          
+          
+        </p>
+        <p>La enumeración de puertos es una tarea crucial en las pruebas de penetración y seguridad de redes. Tal y como hemos visto, Nmap es una herramienta de línea de comandos ampliamente utilizada para esta tarea, pero existen alternativas para realizar la enumeración de puertos de manera efectiva sin utilizar herramientas externas.</p>
+
+<p>Una alternativa a la enumeración de puertos utilizando herramientas externas es aprovechar el poder de los descriptores de archivo en sistemas Unix. Los descriptores de archivo son una forma de acceder y manipular archivos y dispositivos en sistemas Unix. En particular, la utilización de /dev/tcp permite la conexión a un host y puerto específicos como si se tratara de un archivo en el sistema.</p>
+
+<p>Para realizar la enumeración de puertos utilizando /dev/tcp en Bash, es posible crear un script que realice una conexión a cada puerto de interés y compruebe si el puerto está abierto o cerrado en función de si se puede enviar o recibir datos. Una forma de hacer esto es mediante el uso de comandos como “echo” o “cat“, aplicando redireccionamientos al /dev/tcp. El código de estado devuelto por el comando se puede utilizar para determinar si el puerto está abierto o cerrado.</p>
+
+<p><img src="../assets/images/enumeracion-puertos/Terminal.png" alt="CapturaPantallaTerminal" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package main
+
+import (
+	"fmt"
+	"flag"
+	"context" // Done() struct{} || &lt;- ctx.Done()
+	"strings"
+	"strconv"
+	"log"
+	"sync"
+	"time"
+	"net"
+)
+
+var (
+	host = flag.String("host", "127.0.0.1", "Host o dirección IP a escanear")
+	ports = flag.String("range", "1-65535", "Rango de puertos a comprobar: 80,443,1-65535,1000-2000, ...")
+	threads = flag.Int("threads", 1000, "Número de hilos a usar")
+	timeout = flag.Duration("timeout", 1*time.Second, "Segundos por puerto")
+)
+
+func processRange(ctx context.Context, r string) chan int {
+	c := make(chan int) // c &lt;- elemento
+	done := ctx.Done()
+
+	go func() {
+		defer close(c)
+		blocks := strings.Split(r, ",")
+
+		for _, block := range blocks {
+			rg := strings.Split(block, "-")
+			var minPort, maxPort int
+			var err error
+
+			minPort, err = strconv.Atoi(rg[0])
+
+			if err != nil {
+				log.Print("No ha sido posible interpretar el rango: ", block)
+				continue
+			}
+
+			if len(rg) == 1 {
+				maxPort = minPort
+			} else {
+				maxPort, err = strconv.Atoi(rg[1])
+				if err != nil {
+					log.Print("No ha sido posible interpretar el rango: ", block)
+					continue
+				}
+			}
+			for port := minPort; port &lt;= maxPort; port++ {
+				select {
+				case c &lt;- port:
+				case &lt;-done:
+					return
+				}
+			}
+		}
+	}()
+	return c
+}
+
+func scanPorts(ctx context.Context, in &lt;-chan int) chan string {
+	out := make(chan string)
+	done := ctx.Done()
+	var wg sync.WaitGroup
+	wg.Add(*threads)
+
+	for i := 0; i &lt; *threads; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case port, ok := &lt;-in:
+					if !ok {
+						return
+					}
+					s := scanPort(port)
+					select {
+					case out &lt;- s:
+					case &lt;-done:
+						return
+					}
+				case &lt;-done:
+					return
+				}
+			}
+		}()
+	}
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+
+	return out
+}
+
+func scanPort(port int) string {
+	addr := fmt.Sprintf("%s:%d", *host, port) // ip:puerto
+	conn, err := net.DialTimeout("tcp", addr, *timeout)
+
+	if err != nil {
+		return fmt.Sprintf("%d: %s", port, err.Error())
+	}
+
+	conn.Close()
+
+	return fmt.Sprintf("%d: Abierto", port)
+}
+
+func main() {
+	ctx, cancel := context.WithCancel(context.Background()) // Definimos nuestro contexto
+	defer cancel()
+
+	flag.Parse()
+	fmt.Printf("\n[*] Escaneando host %s (Puerto: %s)\n\n", *host, *ports)
+
+	pR := processRange(ctx, *ports)
+	sP := scanPorts(ctx, pR)
+
+	for port := range sP {
+		if strings.HasSuffix(port, ": Abierto") {
+			fmt.Println(port)
+		}
+	}
+}
+</code></pre></div></div>
+
+<p>Aunque esta alternativa puede ser menos precisa y más lenta que el uso de herramientas especializadas como Nmap, es una opción interesante y viable para aquellos que buscan una solución rápida y sencilla para la enumeración de puertos en sistemas Unix. Además, este enfoque puede proporcionar una mejor comprensión de cómo funcionan los descriptores de archivo en los sistemas Unix y cómo se pueden utilizar para realizar tareas de red.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Fecha:</strong> <time datetime="2023-12-24T00:00:00-07:00">December 24, 2023</time></p>
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Quetzal</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
